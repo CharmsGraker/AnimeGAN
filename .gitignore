@@ -181,6 +181,8 @@ fabric.properties
 
 ##########################################
 # ignore folders
+sampling
+vgg19_weight
 dataset
 envs
 ##########################################

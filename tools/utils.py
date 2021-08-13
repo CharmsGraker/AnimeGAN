@@ -1,3 +1,6 @@
+from concurrent.futures import ThreadPoolExecutor
+from functools import wraps
+
 import tensorflow as tf
 from tensorflow.contrib import slim
 from tools.adjust_brightness import adjust_brightness_from_src_to_dst, read_img
@@ -110,3 +113,17 @@ def check_folder(log_dir):
 
 def str2bool(x):
     return x.lower() in ('true')
+
+
+pool = ThreadPoolExecutor(max_workers=4)
+
+
+def Parallel(work):
+    @wraps(work)
+    def wrapper(*args, **kwargs):
+        # t = threading.Thread(target=work, args=args,kwargs=kwargs)
+        # t.start()
+        task = pool.submit(work, *args, **kwargs)
+        # print('parallel down')
+    return wrapper
+

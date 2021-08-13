@@ -1,8 +1,19 @@
 # The edge_smooth.py is from taki0112/CartoonGAN-Tensorflow
 # https://github.com/taki0112/CartoonGAN-Tensorflow#2-do-edge_smooth
+
+
+import sys
+import os
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+root_path = os.path.abspath(os.path.dirname(current_dir) + os.path.sep + '.')
+
+sys.path.append(root_path)
+
+
 from tools.utils import check_folder
 import numpy as np
-import cv2, os, argparse
+import cv2, argparse
 from glob import glob
 from tqdm import tqdm
 
@@ -19,15 +30,18 @@ def parse_args():
 def make_edge_smooth(dataset_name, img_size):
     """
 
-    :param dataset_name: 默认红辣椒
+    :param dataset_name: 默认Hayao
     :param img_size:
     :return:
     """
-    check_folder(os.path.dirname(os.path.dirname(__file__)) + '/dataset/{}/{}'.format(dataset_name, 'smooth'))
 
-    file_list = glob(os.path.dirname(os.path.dirname(__file__)) + '/dataset/{}/{}/*.*'.format(dataset_name, 'style'))
+    # print(glob(os.pardir + '/dataset/{}/{}/*.*'.format(dataset_name, 'style')))
+
+    check_folder(os.pardir + '/dataset/{}/{}'.format(dataset_name, 'smooth'))
+
+    file_list = glob(os.pardir + '/dataset/{}/{}/*.*'.format(dataset_name, 'style'))
     # 指定平滑后的图像保存位置
-    save_dir = os.path.dirname(os.path.dirname(__file__)) + '/dataset/{}/smooth'.format(dataset_name)
+    save_dir = os.pardir + '/dataset/{}/smooth'.format(dataset_name)
 
     # 平滑时，需要参考的窗口大小
     kernel_size = 5
@@ -36,6 +50,8 @@ def make_edge_smooth(dataset_name, img_size):
     # 高斯平滑图像
     gauss = cv2.getGaussianKernel(kernel_size, 0)
     gauss = gauss * gauss.transpose(1, 0)
+
+    assert file_list, "file list can not be empty."
 
     for f in tqdm(file_list):
         # 依次处理每个图片

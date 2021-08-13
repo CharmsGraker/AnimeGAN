@@ -16,7 +16,7 @@ class ImageGenerator(object):
         self.num_cpus = num_cpus
         self.size = size
         self.batch_size = batch_size
-        self.data_mean = data_mean
+        self.data_mean = np.asarray(data_mean).astype(np.float32)
 
     def get_image_paths_train(self, image_dir):
         """
@@ -54,6 +54,7 @@ class ImageGenerator(object):
             # color image1
             image1 = cv2.imread(img_path1.decode()).astype(np.float32)
             image1 = cv2.cvtColor(image1, cv2.COLOR_BGR2RGB)
+
             # image1 现在是,        data mean是
             #               0 1 2           0 1 2
             #               R G B,          B G R

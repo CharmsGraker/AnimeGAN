@@ -21,7 +21,17 @@ def read_img(image_path):
 
 
 def get_mean(dataset_name):
-    file_list = glob(os.path.dirname(os.path.dirname(__file__)) + '/dataset/{}/{}/*.*'.format(dataset_name, 'style'))
+    """
+        请进入tools目录下运行
+    :param dataset_name:
+    :return:
+    """
+    # 如果是以进入tools目录运行 则os.getcwd() 为 D:\Gary\Program\GitHubProject\AnimeGAN\tools
+    # print('os.pardir: ', os.pardir) # 受启动方式有很大影响
+    assert os.path.basename(os.getcwd()) == 'tools'
+
+    # 用于查找
+    file_list = glob(os.pardir + '/dataset/{}/{}/*.*'.format(dataset_name, 'style'))
     image_num = len(file_list)
     print('image_num:', image_num)
 
