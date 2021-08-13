@@ -5,6 +5,7 @@ import numpy as np
 import time
 import sys
 
+# 应该是根据data_man里得到
 VGG_MEAN = [103.939, 116.779, 123.68]
 
 
@@ -13,7 +14,7 @@ class Vgg19:
 
         if vgg19_npy_path is not None:
             self.data_dict = np.load(vgg19_npy_path, encoding='latin1', allow_pickle=True).item()
-            print("npy file loaded ------- ",vgg19_npy_path)
+            print("npy file loaded ------- ", vgg19_npy_path)
         else:
             self.data_dict = None
             print("npy file load error!")
@@ -29,7 +30,10 @@ class Vgg19:
         start_time = time.time()
         rgb_scaled = ((rgb + 1) / 2) * 255.0 # [-1, 1] ~ [0, 255]
 
+        # 在通道方向分离三个轴，得到r,g,b
         red, green, blue = tf.split(axis=3, num_or_size_splits=3, value=rgb_scaled)
+
+        # 消除这批资料风格影响
         bgr = tf.concat(axis=3, values=[blue - VGG_MEAN[0],
                                         green - VGG_MEAN[1],
                                         red - VGG_MEAN[2]])
@@ -52,6 +56,7 @@ class Vgg19:
         self.conv4_2 = self.conv_layer(self.conv4_1, "conv4_2")
         self.conv4_3 = self.conv_layer(self.conv4_2, "conv4_3")
 
+        # 用vgg这一层拿来提取feature map
         self.conv4_4_no_activation = self.no_activation_conv_layer(self.conv4_3, "conv4_4")
 
         self.conv4_4 = self.conv_layer(self.conv4_3, "conv4_4")

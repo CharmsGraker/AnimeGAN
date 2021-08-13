@@ -1,7 +1,11 @@
 
 from tools.ops import *
 
+
 def D_net(x_init,ch, n_dis,sn, scope, reuse):
+    """
+    判别器，具体架构，原作者在doc中已画出，十分贴心
+    """
     channel = ch // 2
     with tf.variable_scope(scope, reuse=reuse):
         x = conv(x_init, channel, kernel=3, stride=1, pad=1, use_bias=False, sn=sn, scope='conv_0')

@@ -5,6 +5,7 @@ from net import generator
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
+
 def parse_args():
     desc = "AnimeGAN"
     parser = argparse.ArgumentParser(description=desc)
@@ -16,15 +17,15 @@ def parse_args():
 
     return parser.parse_args()
 
-def save(saver, sess, checkpoint_dir, model_name):
 
+def save(saver, sess, checkpoint_dir, model_name):
     save_path = os.path.join(checkpoint_dir, model_name + '.ckpt')
     saver.save(sess, save_path, write_meta_graph=True)
-    return  save_path
+    return save_path
+
 
 def main(checkpoint_dir, style_name, ):
-
-    ckpt_dir = '../checkpoint/' + 'generator_'+style_name+'_weight'
+    ckpt_dir = '../checkpoint/' + 'generator_' + style_name + '_weight'
     check_folder(ckpt_dir)
 
     placeholder = tf.placeholder(tf.float32, [1, None, None, 3], name='generator_input')
@@ -49,10 +50,9 @@ def main(checkpoint_dir, style_name, ):
             print(" [*] Failed to find a checkpoint")
             return
 
-        info = save(saver, sess, ckpt_dir, style_name+'-'+counter)
+        info = save(saver, sess, ckpt_dir, style_name + '-' + counter)
 
         print(f'save over : {info} ')
-
 
 
 if __name__ == '__main__':

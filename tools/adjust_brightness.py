@@ -1,10 +1,15 @@
 import numpy as np
 import cv2
 
+"""
+调整brightness工具包
+"""
+
+
 def read_img(image_path):
     img = cv2.imread(image_path)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    assert len(img.shape)==3
+    assert len(img.shape) == 3
     return img
 
 
@@ -14,12 +19,13 @@ def calculate_average_brightness(img):
     B = img[..., 0].mean()
     G = img[..., 1].mean()
     R = img[..., 2].mean()
-
+    # 至于为什么是这个系数，可能是有查证过日系动漫资料？
     brightness = 0.299 * R + 0.587 * G + 0.114 * B
     return brightness, B, G, R
 
+
 # Adjusting the average brightness of the target image to the average brightness of the source image
-def adjust_brightness_from_src_to_dst(dst, src,path=None,if_show=None, if_info=None):
+def adjust_brightness_from_src_to_dst(dst, src, path=None, if_show=None, if_info=None):
     brightness1, B1, G1, R1 = calculate_average_brightness(src)
     brightness2, B2, G2, R2 = calculate_average_brightness(dst)
     brightness_difference = brightness1 / brightness2
@@ -43,8 +49,8 @@ def adjust_brightness_from_src_to_dst(dst, src,path=None,if_show=None, if_info=N
     dstf = np.clip(dstf, 0, 255)
     dstf = np.uint8(dstf)
 
-    ma,na,_ = src.shape
-    mb,nb,_ = dst.shape
+    ma, na, _ = src.shape
+    mb, nb, _ = dst.shape
     result_show_img = np.zeros((max(ma, mb), 3 * max(na, nb), 3))
     result_show_img[:mb, :nb, :] = dst
     result_show_img[:ma, nb:nb + na, :] = src
@@ -61,10 +67,10 @@ def adjust_brightness_from_src_to_dst(dst, src,path=None,if_show=None, if_info=N
 
     return dstf
 
+
 if __name__ == '__main__':
+    A = read_img('../Brightness_tool/A.png')
+    B = read_img('../Brightness_tool/B.png')
 
-  A = read_img('../Brightness_tool/A.png')
-  B = read_img('../Brightness_tool/B.png')
-
-  # adjusted = adjust_brightness_from_src_to_dst(A, B, path='resA.png')
-  adjusted = adjust_brightness_from_src_to_dst(A, B)
+    # adjusted = adjust_brightness_from_src_to_dst(A, B, path='resA.png')
+    adjusted = adjust_brightness_from_src_to_dst(A, B)

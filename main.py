@@ -99,11 +99,11 @@ def main():
         # show network architecture
         show_all_variables()
 
-        if args.phase == 'train' :
+        if args.phase == 'train':
             gan.train()
             print(" [*] Training finished!")
 
-        if args.phase == 'test' :
+        if args.phase == 'test':
             gan.test()
             print(" [*] Test finished!")
 
